@@ -50,6 +50,20 @@ f_letter_prop_l %>%ggplot(aes(x=last_letter,y=value,fill=variable))+geom_bar(pos
 
 
 
+diff_name<-read.csv('diff_name.txt')
+colnames(diff_name)<-c('name','sex','year','counts')
+diff_name %>% ggplot(aes(x=year,y=counts,color=sex)) + geom_bar(stat = 'identity',position = 'dodge')+labs(title="Different kinds of names Male vs Female")
+
+
+
+
+
+
+
+
+
+
+
 install.packages("car")
 library(car)
 data(Salaries)

@@ -112,6 +112,8 @@ names_var.to_csv('names_var.csv')
 
 names.head()
 births_by_year=names.groupby(['year','sex']).sum()
+births_by_year.unstack() # births_by_year具有多重index ，unstack之后，变成了dataframe
+births_by_year.unstack().stack() # births_by_year具有多重index ，unstack之后，变成了dataframe,再stack之后，变成了multi index
 births_by_year.to_csv('births_by_year.csv')
 
 
@@ -128,8 +130,8 @@ last_letters.name='last_letter'
 
 names['last_letter']
 
-table=names.pivot_table('births',index=last_letters,columns=['year','sex'],aggfunc=sum)
-table[2010] # 
+table=names.pivot_table('births',index=last_letters,columns=['sex','year'],aggfunc=sum)
+table['F'] # 
 ###选取有代表性的三年
 subtable=table.reindex(columns=[1910,1960,2010],level='year')
 subtable.head()
@@ -137,13 +139,13 @@ letter_prop=subtable/subtable.sum()
 letter_prop[np.isnan(letter_prop)]=0
 letter_prop.head()
 
-letter_prop.to_csv('letter_prop.csv')
+letter_prop['F'].to_csv('f_letter_prop.csv')
+letter_prop['M'].to_csv('m_letter_prop.csv')
 
 
-
-
-
-
-
-
-    
+#-----------------------stack unstack pivot_table-----------------------------
+da=names[[0,1,3]]
+da.stack()
+diff_name=da.pivot_table(index='year', columns='sex',aggfunc=len) # len 查看 每一年每一种性别 有多少种 不同的名字
+diff_name=diff_name.unstack()
+diff_name.to_csv('./names/diff_name.txt') 
